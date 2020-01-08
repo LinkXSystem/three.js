@@ -41,6 +41,7 @@
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
 
+				// 构建不同的渲染层
 				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 10000 );
 				camera.layers.enable( 0 ); // enabled by default
 				camera.layers.enable( 1 );
@@ -79,6 +80,7 @@
 					object.scale.y = Math.random() + 0.5;
 					object.scale.z = Math.random() + 0.5;
 
+					// 加入不同的渲染层
 					object.layers.set( layer );
 
 					scene.add( object );

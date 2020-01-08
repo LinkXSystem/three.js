@@ -39,6 +39,7 @@
 				scene = new THREE.Scene();
 				scene.background = new THREE.Color( 0, 0, 0 );
 
+				// 基于 SVG 实现 Renderer
 				renderer = new SVGRenderer();
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				document.body.appendChild( renderer.domElement );
