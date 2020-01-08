@@ -24,10 +24,11 @@
 				camera.position.z = 400;
 
 				scene = new THREE.Scene();
-
+				// 加载贴图
 				var texture = new THREE.TextureLoader().load( 'textures/crate.gif' );
 
 				var geometry = new THREE.BoxBufferGeometry( 200, 200, 200 );
+				// 绑定贴图
 				var material = new THREE.MeshBasicMaterial( { map: texture } );
 
 				mesh = new THREE.Mesh( geometry, material );

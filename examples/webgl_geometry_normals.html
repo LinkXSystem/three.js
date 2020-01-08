@@ -61,7 +61,7 @@
 				geometry = geometries[ options.Geometry ];
 
 				// scale geometry to a uniform size
-
+				// 匹配模型大小
 				geometry.computeBoundingSphere();
 
 				var scaleFactor = 160 / geometry.boundingSphere.radius;
@@ -70,6 +70,7 @@
 				mesh = new THREE.Mesh( geometry, material );
 				scene.add( mesh );
 
+				// 对每一个点添加辅助轴
 				var vertexNormalsHelper = new VertexNormalsHelper( mesh, 10 );
 				mesh.add( vertexNormalsHelper );
 

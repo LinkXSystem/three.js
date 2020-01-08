@@ -69,6 +69,7 @@
 					map: new THREE.CanvasTexture( lut.createCanvas() )
 				} ) );
 				sprite.scale.x = 0.125;
+				// 加入 LUT，调色表
 				uiScene.add( sprite );
 
 				mesh = new THREE.Mesh( undefined, new THREE.MeshLambertMaterial( {
@@ -129,6 +130,7 @@
 
 			}
 
+			// 加载模型
 			function loadModel( ) {
 
 				var loader = new THREE.BufferGeometryLoader();
@@ -146,6 +148,7 @@
 					}
 					geometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
 
+					// 设定形状
 					mesh.geometry = geometry;
 					updateColors();
 
@@ -165,6 +168,7 @@
 				var geometry = mesh.geometry;
 				var pressures = geometry.attributes.pressure;
 				var colors = geometry.attributes.color;
+				console.warn(pressures);
 				for ( var i = 0; i < pressures.array.length; i ++ ) {
 
 					var colorValue = pressures.array[ i ];
@@ -176,7 +180,7 @@
 						console.log( 'Unable to determine color for value:', colorValue );
 
 					} else {
-
+						// 重新设定颜色
 						colors.setXYZ( i, color.r, color.g, color.b );
 
 					}

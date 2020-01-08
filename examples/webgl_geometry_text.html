@@ -338,6 +338,7 @@
 
 			}
 
+			// 创建字体
 			function createText() {
 
 				textGeo = new THREE.TextGeometry( text, {
@@ -519,7 +520,7 @@
 			}
 
 			function render() {
-
+				// 旋转的角度
 				group.rotation.y += ( targetRotation - group.rotation.y ) * 0.05;
 
 				camera.lookAt( cameraTarget );
