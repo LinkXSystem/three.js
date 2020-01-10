@@ -40,7 +40,8 @@
 				directionalLight.position.set( 0, 0, 2 );
 				scene.add( directionalLight );
 
-				//3ds files dont store normal maps
+				// 3ds files dont store normal maps
+				// 加载 3ds 的模型
 				var loader = new THREE.TextureLoader();
 				var normal = loader.load( 'models/3ds/portalgun/textures/normal.jpg' );
 

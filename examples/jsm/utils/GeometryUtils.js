@@ -85,7 +85,7 @@ var GeometryUtils = {
 	 * @param center     Center of Hilbert curve.
 	 * @param size       Total width of Hilbert curve.
 	 * @param iterations Number of subdivisions.
-	 * @param v0         Corner index -X, +Y, -Z.
+	 * @param v0         Corner [拐角] index -X, +Y, -Z.
 	 * @param v1         Corner index -X, +Y, +Z.
 	 * @param v2         Corner index -X, -Y, +Z.
 	 * @param v3         Corner index -X, -Y, -Z.
