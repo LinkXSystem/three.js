@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Document</title>
+		<style>
+			html,
+			body,
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+
+			#world {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+				background: linear-gradient(#e4e0ba, #f7d9aa);
+			}
+		</style>
+	</head>
+	<body>
+		<div id="world"></div>
+		<script type="module">
+			// 参考文章： https://tympanus.net/codrops/2016/04/26/the-aviator-animating-basic-3d-scene-threejs/
+
+			// import * as THREE from "../../build/three.module.js";
+
+			const Colors = {
+				RED: 0xf25346,
+				WHITE: 0xd8d0d1,
+				BROWN: 0x59332e,
+				PINK: 0xf5986e,
+				BROWNDARK: 0x23190f,
+				BLUE: 0x68c3c0
+			};
+
+			function init() {
+				// 创建场景
+				createScene();
+				createLights();
+
+				// 构建对象
+				createPlane();
+				createSea();
+				createSky();
+
+				// 循环更新
+				loop();
+			}
+
+			function createScene() {}
+
+			function createLights() {}
+
+			function createPlane() {}
+
+			function createSea() {}
+
+			function createSky() {}
+
+			function loop() {}
+		</script>
+	</body>
+</html>
