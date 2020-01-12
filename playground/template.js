@@ -1,12 +1,15 @@
-import * as THREE from "../build/three.module";
+import * as THREE from "../build/three.module.js";
 
 let container, renderer, scene, camera, light, spotlight;
 
-initail();
+initial();
 draw();
+draw([0, 5, 0], "#323233");
+draw([0, 10, 10], "#d9d2c2");
+
 animation();
 
-function initail() {
+function initial() {
 	container = document.getElementById("container");
 
 	// 构建 renderer
@@ -47,19 +50,21 @@ function initail() {
 	scene.add(spotlight);
 }
 
-function draw() {
+function draw(position, color) {
+	console.warn(position, color);
+	const temp_ = position || [0, 0, 0];
 	const width = 20;
 	const depth = 20;
 	const height = 5;
 
 	const geometry = new THREE.BoxBufferGeometry(width, height, depth);
 	const material = new THREE.MeshToonMaterial({
-		color: "#2E2E3D",
+		color: color || "#2E2E3D",
 		flatShading: THREE.FlatShading
 	});
 	const mesh = new THREE.Mesh(geometry, material);
 
-	mesh.position.set(0, 0, 0);
+	mesh.position.set(...temp_);
 
 	scene.add(mesh);
 }
