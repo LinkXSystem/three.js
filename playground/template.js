@@ -5,7 +5,7 @@ let container, renderer, scene, camera, light, spotlight;
 initial();
 draw();
 draw([0, 5, 0], "#323233");
-draw([0, 10, 10], "#d9d2c2");
+draw([0, 10, 0], "#d9d2c2");
 
 animation();
 
@@ -26,7 +26,8 @@ function initial() {
 
 	// 构建 camera
 	let aspect = window.innerWidth / window.innerHeight;
-	let d = 30;
+	// 调整相机的距离
+	let d = 40;
 	camera = new THREE.OrthographicCamera(
 		-d * aspect,
 		d * aspect,
@@ -51,7 +52,6 @@ function initial() {
 }
 
 function draw(position, color) {
-	console.warn(position, color);
 	const temp_ = position || [0, 0, 0];
 	const width = 20;
 	const depth = 20;
