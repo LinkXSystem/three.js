@@ -1,0 +1,21 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": "mdcs",
+  "plugins": ["html", "@typescript-eslint"],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": 1,
+    "@typescript-eslint/indent": [
+      "error",
+      "tab",
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "space-in-parens": "off",
+    "padded-blocks": "off",
+    "space-before-function-paren": "off",
+    "space-unary-ops": "off",
+    "computed-property-spacing": "off",
+    "array-bracket-spacing": "off"
+  }
+}
