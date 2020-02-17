@@ -73,7 +73,7 @@
 						scene.background = envMap;
 						scene.environment = envMap;
 
-						//
+						// 实例化
 
 						initCar();
 						initMaterials();
@@ -274,16 +274,16 @@
 
 				var time = - performance.now() / 1000;
 
-				camera.position.x = Math.cos( time / 10 ) * 6;
+				camera.position.x = 1 * 6;
 				camera.position.y = 1.5;
-				camera.position.z = Math.sin( time / 10 ) * 6;
+				camera.position.z = 1 * 6;
 				camera.lookAt( 0, 0.5, 0 );
 
-				for ( var i = 0; i < wheels.length; i ++ ) {
+				// for ( var i = 0; i < wheels.length; i ++ ) {
 
-					wheels[ i ].rotation.x = time * Math.PI;
+				// 	wheels[ i ].rotation.x = time * Math.PI;
 
-				}
+				// }
 
 				grid.position.z = - ( time ) % 5;
 
