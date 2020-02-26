@@ -1,0 +1,53 @@
+/* reset.css */
+
+html,
+body,
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  overflow: hidden;
+  background: #f0f0f0;
+}
+
+canvas:focus {
+  outline: 0;
+}
+
+/* reset.css */
+
+.loader {
+  position: fixed;
+  z-index: 10000;
+
+  visibility: hidden;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 100vw;
+  height: 100vh;
+
+  background: #f0f0f0;
+}
+
+.loader .icon {
+  font-size: 6.25em;
+
+  color: #3d7e9a;
+}
+
+.loader .progress {
+  width: 320px;
+  height: 10px;
+  border-radius: 5px;
+  border: 2px solid #3d7e9a;
+
+  overflow: hidden;
+}
