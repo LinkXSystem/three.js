@@ -35,3 +35,11 @@ The aim of the project is to create an easy to use, lightweight, 3D library with
 ### application 模块
 
 同样是参考 Github 和 CodePen 中的项目来编写的项目，但是此类项目考虑是否可以从中获得一些商业上的试用灵感。和 games 模块中的项目有着不同的风格，games 模块中更偏向于愉快的 Coding 。
+
+### 源码分析
+
+- 透视矩阵 Perspective Matrix 的推导及实现
+
+  矩阵的推导过程，对接参考文章 [线性代数之透视矩阵 Perspective Matrix](https://www.qiujiawei.com/linear-algebra-12/)
+
+  Three.js 中对应实现的源码为 [PerspectiveCamera.js](https://github.com/LinkXSystem/three.js/blob/dev/src/cameras/PerspectiveCamera.js)
