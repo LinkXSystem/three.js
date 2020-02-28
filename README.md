@@ -43,3 +43,9 @@ The aim of the project is to create an easy to use, lightweight, 3D library with
   矩阵的推导过程，对接参考文章 [线性代数之透视矩阵 Perspective Matrix](https://www.qiujiawei.com/linear-algebra-12/)
 
   Three.js 中对应实现的源码为 [PerspectiveCamera.js](https://github.com/LinkXSystem/three.js/blob/dev/src/cameras/PerspectiveCamera.js)
+
+- 视角矩阵 Lookat Matrix 的推导及实现
+
+  矩阵的推导过程，对接参考文章 [线性代数之视角矩阵 Lookat Matrix](https://www.qiujiawei.com/linear-algebra-13/)
+
+  Three.js 中对应实现的源码为 [Object3D.js](https://github.com/LinkXSystem/three.js/blob/dev/src/core/Object3D.js)
