@@ -296,6 +296,7 @@ Object.assign( Matrix4.prototype, {
 
 	},
 
+	// TODO: Three.js 的 LookAt 函数的实现
 	lookAt: function ( eye, target, up ) {
 
 		var te = this.elements;
@@ -783,7 +784,6 @@ Object.assign( Matrix4.prototype, {
 		_m1.elements[ 10 ] *= invSZ;
 
 		quaternion.setFromRotationMatrix( _m1 );
-
 		scale.x = sx;
 		scale.y = sy;
 		scale.z = sz;
@@ -792,6 +792,7 @@ Object.assign( Matrix4.prototype, {
 
 	},
 
+	// TODO：透视矩阵的生成
 	makePerspective: function ( left, right, top, bottom, near, far ) {
 
 		if ( far === undefined ) {

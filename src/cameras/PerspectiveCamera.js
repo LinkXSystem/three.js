@@ -15,10 +15,13 @@ function PerspectiveCamera( fov, aspect, near, far ) {
 
 	this.type = 'PerspectiveCamera';
 
+	// 视角
 	this.fov = fov !== undefined ? fov : 50;
 	this.zoom = 1;
 
+	// 近平面
 	this.near = near !== undefined ? near : 0.1;
+	// 远平面
 	this.far = far !== undefined ? far : 2000;
 	this.focus = 10;
 
@@ -187,7 +190,7 @@ PerspectiveCamera.prototype = Object.assign( Object.create( Camera.prototype ), 
 	},
 
 	updateProjectionMatrix: function () {
-
+		// TODO: 透视矩阵的生成
 		var near = this.near,
 			top = near * Math.tan( MathUtils.DEG2RAD * 0.5 * this.fov ) / this.zoom,
 			height = 2 * top,
@@ -195,6 +198,7 @@ PerspectiveCamera.prototype = Object.assign( Object.create( Camera.prototype ), 
 			left = - 0.5 * width,
 			view = this.view;
 
+		// TODO: 相对偏移
 		if ( this.view !== null && this.view.enabled ) {
 
 			var fullWidth = view.fullWidth,
@@ -210,6 +214,7 @@ PerspectiveCamera.prototype = Object.assign( Object.create( Camera.prototype ), 
 		var skew = this.filmOffset;
 		if ( skew !== 0 ) left += near * skew / this.getFilmWidth();
 
+		// 需要结合 Matrix4 的 makePerspective 方法进行分析
 		this.projectionMatrix.makePerspective( left, left + width, top, top - height, near, this.far );
 
 		this.projectionMatrixInverse.getInverse( this.projectionMatrix );

@@ -284,11 +284,11 @@ Object3D.prototype = Object.assign( Object.create( EventDispatcher.prototype ), 
 		_position.setFromMatrixPosition( this.matrixWorld );
 
 		if ( this.isCamera || this.isLight ) {
-
+			// TODO：调用 LookAt 函数的入口
 			_m1.lookAt( _position, _target, this.up );
 
 		} else {
-
+			// TODO：调用 LookAt 函数的入口
 			_m1.lookAt( _target, _position, this.up );
 
 		}
