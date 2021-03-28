@@ -1,45 +1,12 @@
-/**
- * @author Daosheng Mu / https://github.com/DaoshengMu/
- * @author mrdoob / http://mrdoob.com/
- * @author takahirox / https://github.com/takahirox/
- */
-
 THREE.TGALoader = function ( manager ) {
 
-	THREE.Loader.call( this, manager );
+	THREE.DataTextureLoader.call( this, manager );
 
 };
 
-THREE.TGALoader.prototype = Object.assign( Object.create( THREE.Loader.prototype ), {
+THREE.TGALoader.prototype = Object.assign( Object.create( THREE.DataTextureLoader.prototype ), {
 
 	constructor: THREE.TGALoader,
-
-	load: function ( url, onLoad, onProgress, onError ) {
-
-		var scope = this;
-
-		var texture = new THREE.Texture();
-
-		var loader = new THREE.FileLoader( this.manager );
-		loader.setResponseType( 'arraybuffer' );
-		loader.setPath( this.path );
-
-		loader.load( url, function ( buffer ) {
-
-			texture.image = scope.parse( buffer );
-			texture.needsUpdate = true;
-
-			if ( onLoad !== undefined ) {
-
-				onLoad( texture );
-
-			}
-
-		}, onProgress, onError );
-
-		return texture;
-
-	},
 
 	parse: function ( buffer ) {
 
@@ -58,6 +25,7 @@ THREE.TGALoader.prototype = Object.assign( Object.create( THREE.Loader.prototype
 						console.error( 'THREE.TGALoader: Invalid type colormap data for indexed type.' );
 
 					}
+
 					break;
 
 					// check colormap type
@@ -71,6 +39,7 @@ THREE.TGALoader.prototype = Object.assign( Object.create( THREE.Loader.prototype
 						console.error( 'THREE.TGALoader: Invalid type colormap data for colormap type.' );
 
 					}
+
 					break;
 
 					// What the need of a file without data ?
@@ -166,11 +135,13 @@ THREE.TGALoader.prototype = Object.assign( Object.create( THREE.Loader.prototype
 						// raw pixels
 
 						count *= pixel_size;
+
 						for ( i = 0; i < count; ++ i ) {
 
 							pixel_data[ shift + i ] = data[ offset ++ ];
 
 						}
+
 						shift += count;
 
 					}
@@ -522,21 +493,20 @@ THREE.TGALoader.prototype = Object.assign( Object.create( THREE.Loader.prototype
 
 		//
 
-		var useOffscreen = typeof OffscreenCanvas !== 'undefined';
-
-		var canvas = useOffscreen ? new OffscreenCanvas( header.width, header.height ) : document.createElement( 'canvas' );
-		canvas.width = header.width;
-		canvas.height = header.height;
-
-		var context = canvas.getContext( '2d' );
-		var imageData = context.createImageData( header.width, header.height );
-
+		var imageData = new Uint8Array( header.width * header.height * 4 );
 		var result = tgaParse( use_rle, use_pal, header, offset, content );
-		var rgbaData = getTgaRGBA( imageData.data, header.width, header.height, result.pixel_data, result.palettes );
+		getTgaRGBA( imageData, header.width, header.height, result.pixel_data, result.palettes );
 
-		context.putImageData( imageData, 0, 0 );
+		return {
 
-		return useOffscreen ? canvas.transferToImageBitmap() : canvas;
+			data: imageData,
+			width: header.width,
+			height: header.height,
+			flipY: true,
+			generateMipmaps: true,
+			minFilter: THREE.LinearMipmapLinearFilter,
+
+		};
 
 	}
 

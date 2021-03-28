@@ -2,7 +2,7 @@
 
 #### JavaScript 3D library
 
-The aim of the project is to create an easy to use, lightweight, 3D library with a default WebGL renderer. The library also provides Canvas 2D, SVG and CSS3D renderers in the examples.
+The aim of the project is to create an easy to use, lightweight, cross-browser, general purpose 3D library. The current builds only include a WebGL renderer but WebGPU (experimental), SVG and CSS3D renderers are also available in the examples.
 
 该项目的目标是基于默认的 WebGL 渲染器来构建便于使用且轻量的 3D 库。该库也在样例中提供 Canvas 2D, SVG 和 CSS3D 的渲染器
 
