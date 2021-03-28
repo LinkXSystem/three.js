@@ -1,6 +1,4 @@
 /**
- * @author takahiro / https://github.com/takahirox
- *
  * Dependencies
  *  - mmd-parser https://github.com/takahirox/mmd-parser
  *  - THREE.TGALoader
@@ -13,7 +11,7 @@
  * VPD is a posing data format used in MMD(Miku Miku Dance).
  *
  * MMD official site
- *  - http://www.geocities.jp/higuchuu4/index_e.htm
+ *  - https://sites.google.com/view/evpvp/
  *
  * PMD, VMD format (in Japanese)
  *  - http://blog.goo.ne.jp/torisu_tetosuki/e/209ad341d3ece2b1b4df24abf619d6e4
@@ -184,6 +182,8 @@ THREE.MMDLoader = ( function () {
 				.setMimeType( undefined )
 				.setPath( this.path )
 				.setResponseType( 'arraybuffer' )
+				.setRequestHeader( this.requestHeader )
+				.setWithCredentials( this.withCredentials )
 				.load( url, function ( buffer ) {
 
 					onLoad( parser.parsePmd( buffer, true ) );
@@ -208,6 +208,8 @@ THREE.MMDLoader = ( function () {
 				.setMimeType( undefined )
 				.setPath( this.path )
 				.setResponseType( 'arraybuffer' )
+				.setRequestHeader( this.requestHeader )
+				.setWithCredentials( this.withCredentials )
 				.load( url, function ( buffer ) {
 
 					onLoad( parser.parsePmx( buffer, true ) );
@@ -237,7 +239,9 @@ THREE.MMDLoader = ( function () {
 			this.loader
 				.setMimeType( undefined )
 				.setPath( this.animationPath )
-				.setResponseType( 'arraybuffer' );
+				.setResponseType( 'arraybuffer' )
+				.setRequestHeader( this.requestHeader )
+				.setWithCredentials( this.withCredentials );
 
 			for ( var i = 0, il = urls.length; i < il; i ++ ) {
 
@@ -270,6 +274,8 @@ THREE.MMDLoader = ( function () {
 				.setMimeType( isUnicode ? undefined : 'text/plain; charset=shift_jis' )
 				.setPath( this.animationPath )
 				.setResponseType( 'text' )
+				.setRequestHeader( this.requestHeader )
+				.setWithCredentials( this.withCredentials )
 				.load( url, function ( text ) {
 
 					onLoad( parser.parseVpd( text, true ) );
@@ -297,7 +303,7 @@ THREE.MMDLoader = ( function () {
 
 				}
 
-				this.parser = new MMDParser.Parser();
+				this.parser = new MMDParser.Parser(); // eslint-disable-line no-undef
 
 			}
 
@@ -577,6 +583,8 @@ THREE.MMDLoader = ( function () {
 				var boneData = data.bones[ i ];
 
 				var bone = {
+					index: i,
+					transformationClass: boneData.transformationClass,
 					parent: boneData.parentIndex,
 					name: boneData.name,
 					pos: boneData.position.slice( 0, 3 ),
@@ -685,6 +693,10 @@ THREE.MMDLoader = ( function () {
 
 					iks.push( param );
 
+					// Save the reference even from bone data for efficiently
+					// simulating PMX animation system
+					bones[ i ].ik = param;
+
 				}
 
 			}
@@ -692,6 +704,9 @@ THREE.MMDLoader = ( function () {
 			// grants
 
 			if ( data.metadata.format === 'pmx' ) {
+
+				// bone index -> grant entry map
+				var grantEntryMap = {};
 
 				for ( var i = 0; i < data.metadata.boneCount; i ++ ) {
 
@@ -710,15 +725,54 @@ THREE.MMDLoader = ( function () {
 						transformationClass: boneData.transformationClass
 					};
 
-					grants.push( param );
+					grantEntryMap[ i ] = { parent: null, children: [], param: param, visited: false };
 
 				}
 
-				grants.sort( function ( a, b ) {
+				var rootEntry = { parent: null, children: [], param: null, visited: false };
 
-					return a.transformationClass - b.transformationClass;
+				// Build a tree representing grant hierarchy
 
-				} );
+				for ( var boneIndex in grantEntryMap ) {
+
+					var grantEntry = grantEntryMap[ boneIndex ];
+					var parentGrantEntry = grantEntryMap[ grantEntry.parentIndex ] || rootEntry;
+
+					grantEntry.parent = parentGrantEntry;
+					parentGrantEntry.children.push( grantEntry );
+
+				}
+
+				// Sort grant parameters from parents to children because
+				// grant uses parent's transform that parent's grant is already applied
+				// so grant should be applied in order from parents to children
+
+				function traverse( entry ) {
+
+					if ( entry.param ) {
+
+						grants.push( entry.param );
+
+						// Save the reference even from bone data for efficiently
+						// simulating PMX animation system
+						bones[ entry.param.index ].grant = entry.param;
+
+					}
+
+					entry.visited = true;
+
+					for ( var i = 0, il = entry.children.length; i < il; i ++ ) {
+
+						var child = entry.children[ i ];
+
+						// Cut off a loop if exists. (Is a grant loop invalid?)
+						if ( ! child.visited ) traverse( child );
+
+					}
+
+				}
+
+				traverse( rootEntry );
 
 			}
 
@@ -1015,7 +1069,6 @@ THREE.MMDLoader = ( function () {
 				 *
 				 * MMD         MeshToonMaterial
 				 * diffuse  -  color
-				 * specular -  specular
 				 * ambient  -  emissive * a
 				 *               (a = 1.0 without map texture or 0.2 with map texture)
 				 *
@@ -1024,9 +1077,7 @@ THREE.MMDLoader = ( function () {
 				 */
 				params.color = new THREE.Color().fromArray( material.diffuse );
 				params.opacity = material.diffuse[ 3 ];
-				params.specular = new THREE.Color().fromArray( material.specular );
 				params.emissive = new THREE.Color().fromArray( material.ambient );
-				params.shininess = Math.max( material.shininess, 1e-4 ); // to prevent pow( 0.0, 0.0 )
 				params.transparent = params.opacity !== 1.0;
 
 				//
@@ -1075,8 +1126,7 @@ THREE.MMDLoader = ( function () {
 
 							params.envMap = this._loadTexture(
 								fileNames[ 1 ],
-								textures,
-								{ sphericalReflectionMapping: true }
+								textures
 							);
 
 							params.combine = extension === '.sph'
@@ -1127,7 +1177,7 @@ THREE.MMDLoader = ( function () {
 
 						params.envMap = this._loadTexture(
 							data.textures[ material.envTextureIndex ],
-							textures, { sphericalReflectionMapping: true }
+							textures
 						);
 
 						params.combine = material.envFlag === 1
@@ -1284,7 +1334,7 @@ THREE.MMDLoader = ( function () {
 
 				try {
 
-					index = parseInt( filePath.match( 'toon([0-9]{2})\.bmp$' )[ 1 ] );
+					index = parseInt( filePath.match( /toon([0-9]{2})\.bmp$/ )[ 1 ] );
 
 				} catch ( e ) {
 
@@ -1342,12 +1392,6 @@ THREE.MMDLoader = ( function () {
 				delete texture.readyCallbacks;
 
 			}, onProgress, onError );
-
-			if ( params.sphericalReflectionMapping === true ) {
-
-				texture.mapping = THREE.SphericalReflectionMapping;
-
-			}
 
 			texture.readyCallbacks = [];
 

@@ -12,8 +12,8 @@
 
 			import * as THREE from '../build/three.module.js';
 
-			var camera, scene, renderer;
-			var mesh;
+			let camera, scene, renderer;
+			let mesh;
 
 			init();
 			animate();
@@ -24,12 +24,11 @@
 				camera.position.z = 400;
 
 				scene = new THREE.Scene();
-				// 加载贴图
-				var texture = new THREE.TextureLoader().load( 'textures/crate.gif' );
 
-				var geometry = new THREE.BoxBufferGeometry( 200, 200, 200 );
-				// 绑定贴图
-				var material = new THREE.MeshBasicMaterial( { map: texture } );
+				const texture = new THREE.TextureLoader().load( 'textures/crate.gif' );
+
+				const geometry = new THREE.BoxGeometry( 200, 200, 200 );
+				const material = new THREE.MeshBasicMaterial( { map: texture } );
 
 				mesh = new THREE.Mesh( geometry, material );
 				scene.add( mesh );
@@ -41,7 +40,7 @@
 
 				//
 
-				window.addEventListener( 'resize', onWindowResize, false );
+				window.addEventListener( 'resize', onWindowResize );
 
 			}
 
